@@ -1,26 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { RECIPIES } from "../data/temporaryData";
 import { FlatList } from "react-native-gesture-handler";
-const RecipeDetailsScreen = (props) => {
+import CheckBox from "@react-native-community/checkbox";
+const RecipeDetailScreen = (props) => {
   const recipeId = props.navigation.getParam("recipeId");
-  const selectedRecipie = RECIPIES.find((recipie) => recipie.id === recipeId);
+  const [selectedRecipie, setSelectedRecipie] = useState(
+    RECIPIES.find((recipie) => recipie.id === recipeId)
+  );
+  const [checkBoxes, setCheckboxes] = useState(() => {
+    return Array(selectedRecipie.ingridients.length).fill(false);
+  });
   const renderIngredient = (itemData) => {
-    return <Text>* {itemData.item}</Text>;
+    return (
+      <View style={styles.ingerdientsListItem}>
+        <CheckBox
+          value={checkBoxes[itemData.index]}
+          onValueChange={(newValue) =>
+            setCheckboxes((curr) => {
+              const index = itemData.index;
+              return Object.assign([], checkBoxes, { [index]: newValue });
+            })
+          }
+        />
+        <Text>{itemData.item}</Text>
+      </View>
+    );
   };
   const renderStep = (itemData) => {
-    return <Text>{itemData.item}</Text>;
+    return (
+      <View style={styles.stepsListItem}>
+        <Text style={styles.stepItemText}>
+          {itemData.index + 1}. {itemData.item}
+        </Text>
+      </View>
+    );
   };
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ImageBackground
         style={styles.titleContainer}
         source={{
           uri: selectedRecipie.imageUrl,
           cache: "only-if-cached",
-        }}>
-        <Text style={styles.title}>{selectedRecipie.title}</Text>
-      </ImageBackground>
+        }}></ImageBackground>
       <View style={styles.recipieContainer}>
         <View style={styles.ingerdientsContainer}>
           <Text style={styles.ingerdients}>Ingredients:</Text>
@@ -42,10 +65,15 @@ const RecipeDetailsScreen = (props) => {
     </View>
   );
 };
-
+RecipeDetailScreen.navigationOptions = (navigationData) => {
+  const title = navigationData.navigation.getParam("title");
+  return { headerTitle: title };
+};
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
+  list: {
+    flexDirection: "row",
+    marginVertical: 5,
+    width: "100%",
   },
   titleContainer: {
     width: "100%",
@@ -63,6 +91,7 @@ const styles = StyleSheet.create({
   },
   recipieContainer: {
     paddingHorizontal: 20,
+    flex: 1,
   },
   ingerdientsContainer: {
     width: "100%",
@@ -70,6 +99,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     paddingBottom: 20,
     borderBottomWidth: 1,
+    height: "40%",
   },
   ingerdients: {
     fontSize: 18,
@@ -77,6 +107,22 @@ const styles = StyleSheet.create({
   steps: {
     fontSize: 18,
   },
+  ingerdientsListItem: {
+    flexDirection: "row",
+    marginVertical: 5,
+    width: "100%",
+    alignItems: "center",
+  },
+  stepsListItem: {
+    marginVertical: 5,
+  },
+  stepsContainer: {
+    width: "100%",
+    height: "50%",
+  },
+  stepItemText: {
+    fontSize: 16,
+  },
 });
 
-export default RecipeDetailsScreen;
+export default RecipeDetailScreen;

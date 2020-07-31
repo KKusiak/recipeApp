@@ -16,11 +16,12 @@ const RecipesScreen = (props) => {
   const displayedRecipies = RECIPIES.filter(
     (recipe) => recipe.categoryId.indexOf(catId) >= 0
   );
-  const selectRecipeHandler = (id) => {
+  const selectRecipeHandler = (id, title) => {
     props.navigation.navigate({
       routeName: "RecipieDetail",
       params: {
         recipeId: id,
+        title: title,
       },
     });
   };
@@ -28,7 +29,10 @@ const RecipesScreen = (props) => {
   const renderGridItem = (itemData) => {
     return (
       <View style={styles.gridItem}>
-        <TouchableOpacity onPress={() => selectRecipeHandler(itemData.item.id)}>
+        <TouchableOpacity
+          onPress={() =>
+            selectRecipeHandler(itemData.item.id, itemData.item.title)
+          }>
           <ImageBackground
             source={{
               uri: itemData.item.imageUrl,
