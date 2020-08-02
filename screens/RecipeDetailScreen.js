@@ -3,14 +3,18 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { RECIPIES } from "../data/temporaryData";
 import { FlatList } from "react-native-gesture-handler";
 import CheckBox from "@react-native-community/checkbox";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/HeaderButton";
 const RecipeDetailScreen = (props) => {
   const recipeId = props.navigation.getParam("recipeId");
-  const [selectedRecipie, setSelectedRecipie] = useState(
-    RECIPIES.find((recipie) => recipie.id === recipeId)
-  );
+  const selectedRecipie = RECIPIES.find((recipie) => recipie.id === recipeId);
+
   const [checkBoxes, setCheckboxes] = useState(() => {
     return Array(selectedRecipie.ingridients.length).fill(false);
   });
+
+  console.log(props);
+
   const renderIngredient = (itemData) => {
     return (
       <View style={styles.ingerdientsListItem}>
@@ -51,6 +55,7 @@ const RecipeDetailScreen = (props) => {
             data={selectedRecipie.ingridients}
             keyExtractor={(item) => item}
             renderItem={renderIngredient}
+            persistentScrollbar={true}
           />
         </View>
         <View style={styles.stepsContainer}>
@@ -59,6 +64,7 @@ const RecipeDetailScreen = (props) => {
             data={selectedRecipie.steps}
             keyExtractor={(item) => item}
             renderItem={renderStep}
+            persistentScrollbar={true}
           />
         </View>
       </View>
@@ -67,13 +73,24 @@ const RecipeDetailScreen = (props) => {
 };
 RecipeDetailScreen.navigationOptions = (navigationData) => {
   const title = navigationData.navigation.getParam("title");
-  return { headerTitle: title };
+  return {
+    headerTitle: title,
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title='Favorite'
+          iconName='ios-star-outline'
+          color='#fcca03'
+          onPress={() => {}}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 const styles = StyleSheet.create({
   list: {
-    flexDirection: "row",
-    marginVertical: 5,
-    width: "100%",
+    borderRightColor: "#4d91ff",
+    borderRightWidth: 1,
   },
   titleContainer: {
     width: "100%",

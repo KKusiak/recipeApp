@@ -9,7 +9,8 @@ import {
   ImageBackground,
 } from "react-native";
 import { CATEGORIES } from "../data/temporaryData";
-
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/HeaderButton";
 const CategoriesScreen = (props) => {
   const renderGridItem = (itemData) => {
     url = `../assets/img/${itemData.item.title}.jpg`;
@@ -44,8 +45,20 @@ const CategoriesScreen = (props) => {
   );
 };
 
-CategoriesScreen.navigationOptions = {
-  headerTitle: "Categories",
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Categories",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item
+          title='Menu'
+          iconName='ios-menu'
+          color='#000'
+          onPress={() => navData.navigation.toggleDrawer()}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
