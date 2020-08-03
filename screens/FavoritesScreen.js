@@ -18,14 +18,27 @@ const FavoritesScreen = (props) => {
       },
     });
   };
+  console.log(displayedRecipies);
 
-  return (
-    <RecipesList
-      onSelectRecipe={selectRecipeHandler}
-      displayedRecipies={displayedRecipies}
-    />
-  );
+  if (!Array.isArray(displayedRecipies) || displayedRecipies.length) {
+    return (
+      <RecipesList
+        onSelectRecipe={selectRecipeHandler}
+        displayedRecipies={displayedRecipies}
+      />
+    );
+  } else {
+    return (
+      <View style={styles.emptyScreenText}>
+        <Text>Add recipes to your favorite's list!</Text>
+      </View>
+    );
+  }
 };
+
+const styles = StyleSheet.create({
+  emptyScreenText: { justifyContent: "center", alignItems: "center", flex: 1 },
+});
 
 FavoritesScreen.navigationOptions = (navData) => {
   return {
