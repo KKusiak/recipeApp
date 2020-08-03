@@ -1,11 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import RecipesList from "../components/RecipesList";
-import { RECIPIES } from "../data/temporaryData";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
+import { useSelector } from "react-redux";
 const FavoritesScreen = (props) => {
-  const displayedRecipies = RECIPIES;
+  const availableRecipes = useSelector(
+    (state) => state.recipes.favoritesRecipes
+  );
+  const displayedRecipies = availableRecipes;
   const selectRecipeHandler = (id, title) => {
     props.navigation.navigate({
       routeName: "FavoriteRecipeDetail",
@@ -34,16 +37,6 @@ FavoritesScreen.navigationOptions = (navData) => {
           iconName='ios-menu'
           color='#000'
           onPress={() => navData.navigation.toggleDrawer()}
-        />
-      </HeaderButtons>
-    ),
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item
-          title='Menu'
-          iconName='ios-save'
-          color='#000'
-          onPress={() => {}}
         />
       </HeaderButtons>
     ),

@@ -1,20 +1,16 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  FlatList,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
+import { View } from "react-native";
 import { CATEGORIES, RECIPIES } from "../data/temporaryData";
 import RecipesList from "../components/RecipesList";
-
+import { useSelector } from "react-redux";
 const RecipesScreen = (props) => {
   const catId = props.navigation.getParam("categoryId");
 
-  const displayedRecipies = RECIPIES.filter(
+  const availableRecipes = useSelector(
+    (state) => state.recipes.filteredRecipes
+  );
+
+  const displayedRecipies = availableRecipes.filter(
     (recipe) => recipe.categoryId.indexOf(catId) >= 0
   );
   const selectRecipeHandler = (id, title) => {
