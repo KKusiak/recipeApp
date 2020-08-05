@@ -8,6 +8,8 @@ const FilterSwitch = (props) => {
       <Switch
         value={props.value}
         onValueChange={(newValue) => props.onValueChange(newValue)}
+        thumbColor={"#f4f4f4"}
+        trackColor={{ false: "#a8a8a8", true: "#3684c7" }}
       />
     </View>
   );

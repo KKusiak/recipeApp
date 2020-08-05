@@ -18,7 +18,6 @@ const FavoritesScreen = (props) => {
       },
     });
   };
-  console.log(displayedRecipies);
 
   if (!Array.isArray(displayedRecipies) || displayedRecipies.length) {
     return (

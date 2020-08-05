@@ -11,6 +11,8 @@ import {
 import { CATEGORIES } from "../data/temporaryData";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
+import { AntDesign } from "@expo/vector-icons";
+
 const CategoriesScreen = (props) => {
   const renderGridItem = (itemData) => {
     url = `../assets/img/${itemData.item.title}.jpg`;
@@ -56,6 +58,14 @@ CategoriesScreen.navigationOptions = (navData) => {
           color='#000'
           onPress={() => navData.navigation.toggleDrawer()}
         />
+      </HeaderButtons>
+    ),
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <TouchableOpacity
+          onPress={() => navData.navigation.navigate("Filters")}>
+          <AntDesign title='Filters' name='filter' size={24} color='black' />
+        </TouchableOpacity>
       </HeaderButtons>
     ),
   };
